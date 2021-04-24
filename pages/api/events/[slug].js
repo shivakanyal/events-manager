@@ -5,7 +5,7 @@ export default (req, res) => {
   if (req.method === "GET") {
     res.status(200).json(evt);
   } else {
-    res.setHeader("Alloow", ["GET"]);
+    res.setHeader("Allow", ["GET"]);
     res.status(405).json(`Method ${req.method} is not allowed`);
   }
 };
