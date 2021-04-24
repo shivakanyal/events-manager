@@ -2,7 +2,6 @@ import EventItem from "@/components/EventItem";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
 export default function EventsPage({ events }) {
-  console.log(events.length);
   return (
     <Layout>
       <h1>Events</h1>
