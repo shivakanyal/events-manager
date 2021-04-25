@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import Layout from "@/components/Layout";
-// import AuthContext from '@/context/AuthContext'
 import styles from "@/styles/AuthForm.module.css";
 import AuthContext from "@/context/AuthContext";
 export default function LoginPage() {
@@ -13,7 +12,7 @@ export default function LoginPage() {
 
   const { login, error } = useContext(AuthContext);
 
-  //   useEffect(() => error && toast.error(error))
+  useEffect(() => error && toast.error(error));
 
   const handleSubmit = (e) => {
     e.preventDefault();
