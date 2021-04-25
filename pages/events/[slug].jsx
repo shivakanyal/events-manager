@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 
 export default function EventPage({ evt }) {
   const router = useRouter();
-
+  console.log("Ye rhi Image,", evt.image);
   const deleteEvent = async (e) => {
     if (confirm("Are You Sure")) {
       const res = await fetch(`${API_URL}/events/${evt.id}`, {
@@ -50,7 +50,11 @@ export default function EventPage({ evt }) {
         {evt.image && (
           <div className={styles.image}>
             <Image
-              src={evt.image.formats.medium.url}
+              src={
+                evt.image.formats.medium
+                  ? evt.image.formats.medium.url
+                  : evt.image.formats.thumbnail.url
+              }
               width={960}
               height={600}
             />
