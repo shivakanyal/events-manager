@@ -1,47 +1,20 @@
-import Layout from "@/components/Layout";
-import { API_URL } from "@/config/index";
-import styles from "@/styles/Event.module.css";
-
-import Image from "next/image";
-import Link from "next/link";
-import { FaPencilAlt, FaTimes } from "react-icons/fa";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { FaPencilAlt, FaTimes } from "react-icons/fa";
+import Link from "next/link";
+import Image from "next/image";
+import Layout from "@/components/Layout";
+// import EventMap from "@/components/EventMap";
+import { API_URL } from "@/config/index";
+import styles from "@/styles/Event.module.css";
 import { useRouter } from "next/router";
 
 export default function EventPage({ evt }) {
   const router = useRouter();
-  console.log("Ye rhi Image,", evt.image);
-  const deleteEvent = async (e) => {
-    if (confirm("Are You Sure")) {
-      const res = await fetch(`${API_URL}/events/${evt.id}`, {
-        method: "DELETE",
-      });
-
-      const date = await res.json();
-      if (!res.ok) {
-        toast.error(data.message);
-      } else {
-        router.push("/events");
-      }
-    }
-  };
 
   return (
     <Layout>
       <div className={styles.event}>
-        <div className={styles.controls}>
-          <Link href={`/events/edit/${evt.id}`}>
-            <a>
-              <FaPencilAlt /> Edit Event
-            </a>
-          </Link>
-          <a href="#" className={styles.delete} onClick={deleteEvent}>
-            <FaTimes /> Delete Event
-          </a>
-        </div>
         <span>
           {new Date(evt.date).toLocaleDateString("en-US")} at {evt.time}
         </span>
@@ -60,15 +33,18 @@ export default function EventPage({ evt }) {
             />
           </div>
         )}
+
         <h3>Performers:</h3>
-        <p>{evt.performance}</p>
-        <h3>DesCription :</h3>
+        <p>{evt.performers}</p>
+        <h3>Description:</h3>
         <p>{evt.description}</p>
-        <h3>Venue:{evt.venue}</h3>
+        <h3>Venue: {evt.venue}</h3>
         <p>{evt.address}</p>
 
+        {/* <EventMap evt={evt} /> */}
+
         <Link href="/events">
-          <a className={styles.back}>{"<"} Go back</a>
+          <a className={styles.back}>{"<"} Go Back</a>
         </Link>
       </div>
     </Layout>
@@ -77,9 +53,8 @@ export default function EventPage({ evt }) {
 
 export async function getServerSideProps({ query: { slug } }) {
   const res = await fetch(`${API_URL}/events?slug=${slug}`);
-
   const events = await res.json();
-  console.log("events", events[0]);
+
   return {
     props: {
       evt: events[0],

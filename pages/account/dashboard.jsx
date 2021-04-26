@@ -1,20 +1,40 @@
 import { parseCookies } from "@/helpers/index";
+import { useRouter } from "next/router";
 import Layout from "@/components/Layout";
+import DashboardEvent from "@/components/DashboardEvent";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Dashboard.module.css";
-import DashboardEvent from "@/components/DashboardEvent";
-export default function DashboardPage({ events }) {
-  const deleteEvent = (id) => {
-    console.log(id);
+
+export default function DashboardPage({ events, token }) {
+  const router = useRouter();
+
+  const deleteEvent = async (id) => {
+    if (confirm("Are you sure?")) {
+      const res = await fetch(`${API_URL}/events/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+      } else {
+        router.reload();
+      }
+    }
   };
-  console.log(events);
+
   return (
-    <Layout title="User DashBoard">
+    <Layout title="User Dashboard">
       <div className={styles.dash}>
         <h1>Dashboard</h1>
         <h3>My Events</h3>
+
         {events.map((evt) => (
-          <DashboardEvent evt={evt} key={evt.id} handleDelete={deleteEvent} />
+          <DashboardEvent key={evt.id} evt={evt} handleDelete={deleteEvent} />
         ))}
       </div>
     </Layout>
@@ -24,7 +44,6 @@ export default function DashboardPage({ events }) {
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req);
 
-  console.log("token", token);
   const res = await fetch(`${API_URL}/events/me`, {
     method: "GET",
     headers: {
@@ -34,9 +53,10 @@ export async function getServerSideProps({ req }) {
 
   const events = await res.json();
 
-  console.log("events", events);
-
   return {
-    props: { events },
+    props: {
+      events,
+      token,
+    },
   };
 }
