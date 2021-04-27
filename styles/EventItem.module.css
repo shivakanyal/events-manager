@@ -5,6 +5,8 @@
   margin: 20px 0;
   padding: 13px 0;
   box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+  background-color: #eee;
+  border-radius: 5px;
 }
 
 .img {

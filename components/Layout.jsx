@@ -23,7 +23,7 @@ export default function Layout({ title, keyword, description, children }) {
 }
 
 Layout.defaultProps = {
-  title: "DJ Events",
+  title: "Events Manager",
   description: "Find the latest events",
   keywords: "events,college",
 };
